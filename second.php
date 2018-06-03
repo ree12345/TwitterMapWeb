@@ -15,7 +15,6 @@ function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oa
   return $connection;
 }
 
- 
 $connection = getConnectionWithAccessToken($consumerkey, $consumersecret, $accesstoken, $accesstokensecret);
 $tweets = $connection->get("https://api.twitter.com/1.1/search/tweets.json?q=&geocode=28.619570,77.088104,1.6km&lang=en&result_type=recent");
  
@@ -25,19 +24,59 @@ $pl=json_decode($json,true);
 $ar1 =array();
 $ar2 =array();
 $t=0;
-for($i=0;$i<7;$i++)
+if(count($pl['statuses']) ===100)
+{
+for($i=0;$i<count($pl['statuses'])-10;$i++)
 {
 if($pl['statuses'][$i]['geo']!== null)
  { $lati =  $pl['statuses'][$i]['geo']['coordinates'][0];
  $long =  $pl['statuses'][$i]['geo']['coordinates'][1];
   $mar[$t] = $pl['statuses'][$i]['user']['name'];
   $mark[$t] =$pl['statuses'][$i]['text'];
-   echo $mar[$t];
-  $ar1[$t] = $lati;
+   $ar1[$t] = $lati;
   $ar2[$t] = $long;
   $t++;
   }
- }
+  
+else if($pl['statuses'][$i]['retweetedStatus']['geo'] !==null)
+ { $lati =  $pl['statuses'][$i]['retweetedStatus']['geo']['coordinates'][0];
+ $long =  $pl['statuses'][$i]['retweetedStatus']['geo']['coordinates'][1];
+  $mar[$t] = $pl['statuses'][$i]['user']['name'];
+  $mark[$t] =$pl['statuses'][$i]['text'];
+   $ar1[$t] = $lati;
+  $ar2[$t] = $long;
+  $t++;
+  }
+ 
+}
+}
+else
+{
+for($i=0;$i<count($pl['statuses']);$i++)
+{
+if($pl['statuses'][$i]['geo']!== null)
+ { $lati =  $pl['statuses'][$i]['geo']['coordinates'][0];
+ $long =  $pl['statuses'][$i]['geo']['coordinates'][1];
+  $mar[$t] = $pl['statuses'][$i]['user']['name'];
+  $mark[$t] =$pl['statuses'][$i]['text'];
+   $ar1[$t] = $lati;
+  $ar2[$t] = $long;
+  $t++;
+  }
+ /*
+else if($pl['statuses'][$i]['retweetedStatus']['geo'] !==null)
+ { $lati =  $pl['statuses'][$i]['retweetedStatus']['geo']['coordinates'][0];
+ $long =  $pl['statuses'][$i]['retweetedStatus']['geo']['coordinates'][1];
+  $mar[$t] = $pl['statuses'][$i]['user']['name'];
+  $mark[$t] =$pl['statuses'][$i]['text'];
+   $ar1[$t] = $lati;
+  $ar2[$t] = $long;
+  $t++;
+  }
+ */
+}
+
+}
 
 ?>
 <script>
