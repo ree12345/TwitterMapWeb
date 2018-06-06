@@ -17,7 +17,7 @@ function getConnectionWithAccessToken($cons_key, $cons_secret, $oauth_token, $oa
 
 $connection = getConnectionWithAccessToken($consumerkey, $consumersecret, $accesstoken, $accesstokensecret);
 $tweets = $connection->get("https://api.twitter.com/1.1/search/tweets.json?q=&geocode=28.619570,77.088104,1.6km&lang=en&result_type=recent");
- 
+ //28.5233,77.1952
 $json = json_encode($tweets);
 $pl=json_decode($json,true);
 
